@@ -57,10 +57,11 @@
     }    
 
     function getNextTime($param) {
-        $tz = 'Europe/Moscow';
+        $tz = 'Europe/Rome';
         $timestamp = time();
         $dt = new DateTime("now", new DateTimeZone($tz)); //first argument "must" be a string
         $dt->setTimestamp($timestamp); //adjust the object to correct timestamp
+       
 
         $token = getToken();
         $trattes = getTratte($token);
@@ -87,7 +88,10 @@
         foreach ($cources as $cource) {    
             $flag = false; 
             foreach($dataArr as $arr){
-                if($arr["time"] == $cource["partenza_ora"]){
+                if(
+                    $arr["time"] == $cource["partenza_ora"] && 
+                    $arr["date"] == $cource["data"]
+                ){
                     $flag = true;
                     break; 
                 }
@@ -106,34 +110,21 @@
                 );                      
                 array_push($dataArr, $arr);                     
             }                       
-        }    
+        }        
 
         $text = "";     
         
         if (count($dataArr) > 0) {          
-            $nextIndex = "";
-            for ($k = 0; $k < count($dataArr); $k++) {
-                if ($dataArr[$k]["time"] > $dt->format("H:i:s")) {
-                    $nextIndex = $k;
-                    break;
-                }
-            }
-            if ($nextIndex === "") {
-                $nextIndex = 0;
-            }
-    
-            for ($index1 = $nextIndex; $index1 < count($dataArr); $index1++) {
-                $route = $dataArr[$index1]["route"];
-                $time = $dataArr[$index1]["time"];
+            
+            for ($i=0; $i < 10; $i++) { 
                 
-                $text .= $route.": ".substr($time,0,5)."\n";
-            }
-            for ($index2 = 0; $index2 < $nextIndex; $index2++) {
-                $route = $dataArr[$index2]["route"];
-                $time = $dataArr[$index2]["time"];
+                $route = $dataArr[$i]["route"];
+                $time = $dataArr[$i]["time"];
+                $date = $dataArr[$i]["date"];
                 
-                $text .= $route.": ".substr($time, 0,5)."\n ";
-            }       
+                $text .= $route.": ".substr($time,0,5)." ".$date."\n";
+            }      
+                
         } else {
             $text = "Nessun dato";
         }
