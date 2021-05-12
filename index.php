@@ -15,7 +15,7 @@
         $text = "";
         if(strtolower($userMessage) == "contacts") {           
             $text = "Centro Prenotazioni, tel: 08133344111\n";
-            $text .= "Aperto tutti i giorni: \nDal Lunedi al Sabato 09:00 - 19:00\n";
+            $text .= "Aperto tutti i giorni dal Lunedi al Sabato 09:00 - 19:00\n";
             $text .= "Domenica e festivi 09:00 - 15:40\n\n";
             $text .= "Mail: centroprenotazioni@medmarnavi.it\n";
             $text .= "Info e Prenotazioni su medmarnavi.it";
